@@ -251,9 +251,9 @@ function quat_ln(out, a) {
  * @returns {quat} out
  */
 function quat_pow(out, a, b) {
-  ln(out, a);
+  quat_ln(out, a);
   quat_scale(out, out, b);
-  exp(out, out);
+  quat_exp(out, out);
   return out;
 }
 /**
