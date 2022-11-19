@@ -1,5 +1,5 @@
 # GMLGL - A GLMatrix port for GML
 
-Work in progress, a direct port of [glmatrix](https://glmatrix.net/). View their website for documentation.
+A (near) direct port of [glmatrix](https://glmatrix.net/). View their website for documentation.
 
-Highly untested and incomplete, use at your own risk!
+Highly untested and incomplete, use at your own risk! Some functions do not port correctly to GML, and so double check the script before using (specifically with mat4).
