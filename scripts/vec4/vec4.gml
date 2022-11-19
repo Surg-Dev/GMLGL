@@ -8,7 +8,7 @@ function vec4_create() {
  * @returns {vec4} a new 4D vector
  */
 function vec4_clone(a) {
-  out = [0,0,0,0]
+  var out = [0,0,0,0]
   out[0] = a[0];
   out[1] = a[1];
   out[2] = a[2];
@@ -25,7 +25,7 @@ function vec4_clone(a) {
  * @returns {vec4} a new 4D vector
  */
 function vec4_fromValues(_x, _y, _z, _w) {
-  out = [0,0,0,0]
+  var out = [0,0,0,0]
   out[0] = _x;
   out[1] = _y;
   out[2] = _z;
@@ -322,7 +322,7 @@ function vec4_normalize(out, a) {
   _w = a[3];
   var len = _x * _x + _y * _y + _z * _z + _w * _w;
   if (len > 0) {
-    len = 1 / Math.sqrt(len);
+    len = 1 / sqrt(len);
   }
   out[0] = _x * len;
   out[1] = _y * len;
@@ -393,8 +393,7 @@ function vec4_lerp(out, a, b, t) {
  * @param {Number} [scale] Length of the resulting vector. If omitted, a unit vector will be returned
  * @returns {vec4} out
  */
-function vec4_random(out, scale) {
-  scale = scale || 1.0;
+function vec4_random(out, scale=1.0) {
   // Marsaglia, George. Choosing a Point from the Surface of a
   // Sphere. Ann. Math. Statist. 43 (1972), no. 2, 645--646.
   // http://projecteuclid.org/euclid.aoms/1177692644;
@@ -523,46 +522,3 @@ function vec4_equals(a, b) {
       GMLGL_EPSILON * max(1.0, abs(a3), abs(b3))
   );
 }
-
-// Unfinished
-///**
-// * Perform some operation over an array of vec4s.
-// *
-// * @param {Array} a the array of vectors to iterate over
-// * @param {Number} stride Number of elements between the start of each vec4. If 0 assumes tightly packed
-// * @param {Number} offset Number of elements to skip at the beginning of the array
-// * @param {Number} count Number of vec4s to iterate over. If 0 iterates over entire array
-// * @param {Function} fn Function to call for each vector in the array
-// * @param {Object} [arg] additional argument to pass to fn
-// * @returns {Array} a
-// * @function
-// */
-//export const forEach = (function() {
-//  let vec = create();
-//  return function(a, stride, offset, count, fn, arg) {
-//    let i, l;
-//    if (!stride) {
-//      stride = 4;
-//    }
-//    if (!offset) {
-//      offset = 0;
-//    }
-//    if (count) {
-//      l = Math.min(count * stride + offset, a.length);
-//    } else {
-//      l = a.length;
-//    }
-//    for (i = offset; i < l; i += stride) {
-//      vec[0] = a[i];
-//      vec[1] = a[i + 1];
-//      vec[2] = a[i + 2];
-//      vec[3] = a[i + 3];
-//      fn(vec, vec, arg);
-//      a[i] = vec[0];
-//      a[i + 1] = vec[1];
-//      a[i + 2] = vec[2];
-//      a[i + 3] = vec[3];
-//    }
-//    return a;
-//  };
-//})();

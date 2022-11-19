@@ -5,7 +5,7 @@
  */
 function quat_create() 
 {
-	return [0,0,0,1];
+	return [0.,0.,0.,1.];
 }
 
 /**
@@ -16,10 +16,10 @@ function quat_create()
  */
 function quat_identity(out)
 {
-	out[0] = 0;
-	out[1] = 0;
-	out[2] = 0;
-	out[3] = 1;
+	out[0] = 0.;
+	out[1] = 0.;
+	out[2] = 0.;
+	out[3] = 1.;
 	return out;
 }
 
@@ -64,9 +64,9 @@ function quat_getAxisAngle(out_axis, q) {
     out_axis[2] = q[2] / s;
   } else {
     // If s is zero, return any axis (no rotation - axis does not matter)
-    out_axis[0] = 1;
-    out_axis[1] = 0;
-    out_axis[2] = 0;
+    out_axis[0] = 1.;
+    out_axis[1] = 0.;
+    out_axis[2] = 0.;
   }
   return rad;
 }
@@ -603,34 +603,32 @@ function quat_equals(a,b){
 // * @param {ReadonlyVec3} b the destination vector
 // * @returns {quat} out
 // */
-//function quat_rotationTo(out, a, b) {
-//  tmpvec3 = vec3.create();
-//  xUnitVec3 = vec3.fromValues(1, 0, 0);
-//  yUnitVec3 = vec3.fromValues(0, 1, 0);
-//  return function(out, a, b) {
-//    dot = vec3.dot(a, b);
-//    if (dot < -0.999999) {
-//      vec3.cross(tmpvec3, xUnitVec3, a);
-//      if (vec3.len(tmpvec3) < 0.000001) vec3.cross(tmpvec3, yUnitVec3, a);
-//      vec3.normalize(tmpvec3, tmpvec3);
-//      setAxisAngle(out, tmpvec3, Math.PI);
-//      return out;
-//    } else if (dot > 0.999999) {
-//      out[0] = 0;
-//      out[1] = 0;
-//      out[2] = 0;
-//      out[3] = 1;
-//      return out;
-//    } else {
-//      vec3.cross(tmpvec3, a, b);
-//      out[0] = tmpvec3[0];
-//      out[1] = tmpvec3[1];
-//      out[2] = tmpvec3[2];
-//      out[3] = 1 + dot;
-//      return normalize(out, out);
-//    }
-//  };
-//})();
+function quat_rotationTo(out, a, b) {
+	var tmpvec3 = vec3_create();
+	var xUnitVec3 = vec3_fromValues(1, 0, 0);
+	var yUnitVec3 = vec3_fromValues(0, 1, 0);
+	var dot = vec3_dot(a, b);
+	if (dot < -0.999999) {
+	    vec3_cross(tmpvec3, xUnitVec3, a);
+	    if (vec3_length(tmpvec3) < 0.000001) vec3_cross(tmpvec3, yUnitVec3, a);
+	    vec3_normalize(tmpvec3, tmpvec3);
+	    quat_setAxisAngle(out, tmpvec3, pi);
+	    return out;
+	} else if (dot > 0.999999) {
+	    out[0] = 0;
+	    out[1] = 0;
+	    out[2] = 0;
+	    out[3] = 1;
+	    return out;
+	} else {
+	    vec3_cross(tmpvec3, a, b);
+	    out[0] = tmpvec3[0];
+	    out[1] = tmpvec3[1];
+	    out[2] = tmpvec3[2];
+	    out[3] = 1 + dot;
+	    return quat_normalize(out, out);
+	}
+}
 ///**
 // * Performs a spherical linear interpolation with two control points
 // *
@@ -642,16 +640,14 @@ function quat_equals(a,b){
 // * @param {Number} t interpolation amount, in the range [0-1], between the two inputs
 // * @returns {quat} out
 // */
-//const sqlerp = (function() {
-//  temp1 = create();
-//  temp2 = create();
-//  return function(out, a, b, c, d, t) {
-//    slerp(temp1, a, d, t);
-//    slerp(temp2, b, c, t);
-//    slerp(out, temp1, temp2, 2 * t * (1 - t));
-//    return out;
-//  };
-//})();
+function quat_sqlerp(out, a, b, c, d, t){
+	var t1 = quat_create();
+	var t2 = quat_create();
+	quat_slerp(t1, a, d, t);
+	quat_slerp(t2, b, c, t);
+	quat_slerp(out, t1, t2, 2 * t * (1 - t));
+	return out;
+}
 ///**
 // * Sets the specified quaternion with values corresponding to the given
 // * axes. Each axis is a vec3 and is expected to be unit length and
@@ -662,19 +658,17 @@ function quat_equals(a,b){
 // * @param {ReadonlyVec3} up    the vector representing the local "up" direction
 // * @returns {quat} out
 // */
-//const setAxes = (function() {
-//  matr = mat3.create();
-//  return function(out, view, right, up) {
-//    matr[0] = right[0];
-//    matr[3] = right[1];
-//    matr[6] = right[2];
-//    matr[1] = up[0];
-//    matr[4] = up[1];
-//    matr[7] = up[2];
-//    matr[2] = -view[0];
-//    matr[5] = -view[1];
-//    matr[8] = -view[2];
-//    return normalize(out, fromMat3(out, matr));
-//  };
-//})();
+function quat_setAxes(out, view, right, up){
+	var matr = array_create(3, array_create(3,0.0));
+	matr[0] = right[0];
+    matr[3] = right[1];
+    matr[6] = right[2];
+    matr[1] = up[0];
+    matr[4] = up[1];
+    matr[7] = up[2];
+    matr[2] = -view[0];
+    matr[5] = -view[1];
+    matr[8] = -view[2];
+	return quat_normalize(out, quat_fromMat3(out, matr));
+}
 

@@ -4,8 +4,8 @@
  * @returns {quat2} a new dual quaternion [real -> rotation, dual -> translation]
  */
 function quat2_create() {
-  var dq = array_create(8,0)
-  dq[3] = 1;
+  var dq = array_create(8,0.)
+  dq[3] = 1.;
   return dq;
 }
 /**
@@ -16,7 +16,7 @@ function quat2_create() {
  * @function
  */
 function quat2_clone(a) {
-  var dq = array_create(8,0)
+  var dq = array_create(8,0.)
   dq[0] = a[0];
   dq[1] = a[1];
   dq[2] = a[2];
@@ -42,7 +42,7 @@ function quat2_clone(a) {
  * @function
  */
 function quat2_fromValues(x1, y1, z1, w1, x2, y2, z2, w2) {
-  var dq = array_create(8,0)
+  var dq = array_create(8,0.)
   dq[0] = x1;
   dq[1] = y1;
   dq[2] = z1;
@@ -67,7 +67,7 @@ function quat2_fromValues(x1, y1, z1, w1, x2, y2, z2, w2) {
  * @function
  */
 function quat2_fromRotationTranslationValues(x1, y1, z1, w1, x2, y2, z2) {
-  var dq = array_create(8,0)
+  var dq = array_create(8,0.)
   dq[0] = x1;
   dq[1] = y1;
   dq[2] = z1;
@@ -117,14 +117,14 @@ function quat2_fromRotationTranslation(out, q, t) {
  * @function
  */
 function quat2_fromTranslation(out, t) {
-  out[0] = 0;
-  out[1] = 0;
-  out[2] = 0;
-  out[3] = 1;
+  out[0] = 0.;
+  out[1] = 0.;
+  out[2] = 0.;
+  out[3] = 1.;
   out[4] = t[0] * 0.5;
   out[5] = t[1] * 0.5;
   out[6] = t[2] * 0.5;
-  out[7] = 0;
+  out[7] = 0.;
   return out;
 }
 /**
@@ -140,10 +140,10 @@ function quat2_fromRotation(out, q) {
   out[1] = q[1];
   out[2] = q[2];
   out[3] = q[3];
-  out[4] = 0;
-  out[5] = 0;
-  out[6] = 0;
-  out[7] = 0;
+  out[4] = 0.;
+  out[5] = 0.;
+  out[6] = 0.;
+  out[7] = 0.;
   return out;
 }
 

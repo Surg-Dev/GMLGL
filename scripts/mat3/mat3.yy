@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "GMLGL_MACROS",
+  "name": "mat3",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
